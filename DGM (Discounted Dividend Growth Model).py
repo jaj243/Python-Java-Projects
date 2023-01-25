@@ -13,7 +13,7 @@ def ddm(current_dividend, growth_rate, discount_rate, years):
         intrinsic_value += current_dividend / (1 + discount_rate) ** (i+1)
         current_dividend *= (1 + growth_rate)
     # calculate terminal value
-    terminal_value = current_dividend / (discount_rate - growth_rate)
+    terminal_value = current_dividend / (discount_rate - terminal_growth_rate)
     intrinsic_value += terminal_value
     return intrinsic_value
 
@@ -25,8 +25,8 @@ stock_info = yf.Ticker(ticker).info
 current_dividend = stock_info["regularCashDividend"]
 
 # Assume a constant growth rate of dividends
-growth_rate = 0.03
-
+growth_rate = 0.07
+terminal_growth_rate = .02
 # Assume a required rate of return of 10%
 discount_rate = 0.10
 
