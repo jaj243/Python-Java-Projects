@@ -28,6 +28,7 @@ closing_prices = pd.DataFrame({ticker: data["Close"] for ticker, data in stock_d
 correlation_matrix = closing_prices.corr()
 
 # Plot the stock prices over time
+plt.figure(figsize=(10,5))
 for ticker, data in stock_data.items():
     data["Close"].plot(label=ticker)
 
@@ -35,14 +36,12 @@ for ticker, data in stock_data.items():
 plt.xlabel("Date")
 plt.ylabel("Closing Price")
 plt.legend()
+plt.title("Stock Prices over Time")
 
-# Plot the correlation matrix using a heatmap
+# Create another figure for the correlation matrix
+plt.figure(figsize=(5,5))
 sns.heatmap(correlation_matrix, annot=True, cmap="coolwarm", fmt=".2f")
-
-# Add title for the heatmap and show the plot
 plt.title("Stock Correlation")
-
-# Add OLS summary for the closing prices
 ols_result = sm.OLS(closing_prices.iloc[:, 0], closing_prices.iloc[:, 1:]).fit()
 print(ols_result.summary())
 
