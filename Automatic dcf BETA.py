@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+#Note: this program uses one year lagging data and the fcf percentage of revenue still needs to be added
 
 # In[273]:
 
