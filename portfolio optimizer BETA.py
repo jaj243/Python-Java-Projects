@@ -11,7 +11,7 @@ from pypfopt import expected_returns
 from scipy.optimize import minimize
 # Define the stock symbols you want to extract
 symbols = ['C', 'GOOG', 'RHHBY', 'AVGO ', 'PYPL', 'ABNB','MU','AXP','BCS','ALL','Gild','INTC','DFS','SHEL','HSBC','DVA','AMKBY','HRB','WLKP','CVS','JEPI','SOXX','GLD']
-#weights = np.array(['0.04', '0.04', '0.04', '0.04 ', '0.04', '0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04','0.04'])
+weights = np.array([0.04, 0.04, 0.04, 0.04, 0.04, 0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04])
 # Define the start and end dates for the data
 start_date = '2018-01-01'
 end_date = '2022-12-31'
@@ -70,46 +70,26 @@ sns.heatmap(covariance_matrix, annot=True)
 plt.title('Covariance Matrix Heatmap')
 plt.show()
 
-
 # Compute the expected returns and covariance matrix
-#returns = df.mean()
-#cov_matrix = df.cov()
-#num_portfolios = 5000
-#results = np.zeros((3,num_portfolios))
-#weights_record = []
-
-#for i in range(num_portfolios):
-  #  weights = np.random.random(len(symbols))
- #   weights /= np.sum(weights)
-   # weights_record.append(weights)
-   # portfolio_return = np.sum(returns * weights) * 252
-   # portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-  #  results[0,i] = portfolio_return
-  #  results[1,i] = portfolio_volatility
-  #  results[2,i] = results[0,i] / results[1,i]
-
-# Plot the efficient frontier
-#plt.figure(figsize=(10, 6))
-#plt.scatter(results[1,:], results[0,:], c=results[2,:], cmap='YlGnBu', marker='o', s=10, alpha=0.3)
-#plt.colorbar()
-#plt.scatter(np.sqrt(np.diag(cov_matrix)), returns, marker='X', color='red', s=100, label='Individual Stocks')
-#plt.xlabel('Volatility')
-#plt.ylabel('Returns')
-#plt.title('Efficient Frontier')
-#plt.legend(labelspacing=0.8)
-#plt.show()  
-
-# Compute the expected returns and covariance matrix
+risk_free_rate = .04
 returns = df.mean()
 cov_matrix = df.cov()
-
+portfolio_returnn = np.sum(returns * weights) * 252
+portfolio_volatilityy = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+sharpe_ratio = (portfolio_returnn - risk_free_rate) / portfolio_volatilityy
+print("current ER:")
+print(portfolio_returnn)
+print("current risk:")
+print(portfolio_volatilityy)
+print("current sharpe:")
+print(sharpe_ratio)
 # Define the objective function to minimize
 def portfolio_volatility(weights, returns, cov_matrix):
     portfolio_return = np.sum(returns * weights) * 252
     portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
     return portfolio_volatility
 
-def neg_sharpe_ratio(weights, returns, cov_matrix, risk_free_rate=0.01):
+def neg_sharpe_ratio(weights, returns, cov_matrix, risk_free_rate=0.04):
     portfolio_return = np.sum(returns * weights) * 252
     portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
     sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_volatility
@@ -128,12 +108,19 @@ results = minimize(fun=neg_sharpe_ratio, x0=init_guess, args=(returns, cov_matri
 weights = results['x']
 
 # Display the optimized weights and Sharpe ratio
+portfolio_returnnn = np.sum(returns * weights) * 252
+portfolio_volatilityyy = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
 print(weights)
 print('Sharpe ratio:', -results['fun'])
+print("optimized ER:")
+print(portfolio_returnnn)
+print("optimized risk:")
+print(portfolio_volatilityyy)
+
 # Generate the efficient frontier
 portfolio_returns = []
 portfolio_volatilities = []
-risk_free_rate = 0.01
+risk_free_rate = .04
 
 for x in range(100):
     weights = np.random.random(num_assets)
