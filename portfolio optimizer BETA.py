@@ -72,32 +72,32 @@ plt.show()
 
 
 # Compute the expected returns and covariance matrix
-returns = df.mean()
-cov_matrix = df.cov()
-num_portfolios = 5000
-results = np.zeros((3,num_portfolios))
-weights_record = []
+#returns = df.mean()
+#cov_matrix = df.cov()
+#num_portfolios = 5000
+#results = np.zeros((3,num_portfolios))
+#weights_record = []
 
-for i in range(num_portfolios):
-    weights = np.random.random(len(symbols))
-    weights /= np.sum(weights)
-    weights_record.append(weights)
-    portfolio_return = np.sum(returns * weights) * 252
-    portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
-    results[0,i] = portfolio_return
-    results[1,i] = portfolio_volatility
-    results[2,i] = results[0,i] / results[1,i]
+#for i in range(num_portfolios):
+  #  weights = np.random.random(len(symbols))
+ #   weights /= np.sum(weights)
+   # weights_record.append(weights)
+   # portfolio_return = np.sum(returns * weights) * 252
+   # portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+  #  results[0,i] = portfolio_return
+  #  results[1,i] = portfolio_volatility
+  #  results[2,i] = results[0,i] / results[1,i]
 
 # Plot the efficient frontier
-plt.figure(figsize=(10, 6))
-plt.scatter(results[1,:], results[0,:], c=results[2,:], cmap='YlGnBu', marker='o', s=10, alpha=0.3)
-plt.colorbar()
-plt.scatter(np.sqrt(np.diag(cov_matrix)), returns, marker='X', color='red', s=100, label='Individual Stocks')
-plt.xlabel('Volatility')
-plt.ylabel('Returns')
-plt.title('Efficient Frontier')
-plt.legend(labelspacing=0.8)
-plt.show()  
+#plt.figure(figsize=(10, 6))
+#plt.scatter(results[1,:], results[0,:], c=results[2,:], cmap='YlGnBu', marker='o', s=10, alpha=0.3)
+#plt.colorbar()
+#plt.scatter(np.sqrt(np.diag(cov_matrix)), returns, marker='X', color='red', s=100, label='Individual Stocks')
+#plt.xlabel('Volatility')
+#plt.ylabel('Returns')
+#plt.title('Efficient Frontier')
+#plt.legend(labelspacing=0.8)
+#plt.show()  
 
 # Compute the expected returns and covariance matrix
 returns = df.mean()
@@ -130,3 +130,26 @@ weights = results['x']
 # Display the optimized weights and Sharpe ratio
 print(weights)
 print('Sharpe ratio:', -results['fun'])
+# Generate the efficient frontier
+portfolio_returns = []
+portfolio_volatilities = []
+risk_free_rate = 0.01
+
+for x in range(100):
+    weights = np.random.random(num_assets)
+    weights /= np.sum(weights)
+    portfolio_return = np.sum(returns * weights) * 252
+    portfolio_volatility = np.sqrt(np.dot(weights.T, np.dot(cov_matrix, weights))) * np.sqrt(252)
+    sharpe_ratio = (portfolio_return - risk_free_rate) / portfolio_volatility
+    portfolio_returns.append(portfolio_return)
+    portfolio_volatilities.append(portfolio_volatility)
+
+# Plot the efficient frontier
+plt.figure(figsize=(10, 8))
+sharpe_ratios = [ret / vol for ret, vol in zip(portfolio_returns, portfolio_volatilities)]
+plt.scatter(portfolio_volatilities, portfolio_returns, c=sharpe_ratios, marker='o')
+plt.plot(portfolio_volatilities, portfolio_returns, 'y-o')
+plt.xlabel('Expected Volatility')
+plt.ylabel('Expected Return')
+plt.colorbar(label='Sharpe Ratio')
+plt.show()
