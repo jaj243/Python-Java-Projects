@@ -9,9 +9,14 @@ from pypfopt.efficient_frontier import EfficientFrontier
 from pypfopt import risk_models
 from pypfopt import expected_returns
 from scipy.optimize import minimize
+
+#port beta + full ef
+
+
 # Define the stock symbols you want to extract
 symbols = ['C', 'GOOG', 'RHHBY', 'AVGO ', 'PYPL', 'ABNB','MU','AXP','BCS','ALL','Gild','INTC','DFS','SHEL','HSBC','DVA','AMKBY','HRB','WLKP','CVS','JEPI','SOXX','GLD']
 weights = np.array([0.04, 0.04, 0.04, 0.04, 0.04, 0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04,0.04])
+risk_free_rate = .04 #centralize
 # Define the start and end dates for the data
 start_date = '2018-01-01'
 end_date = '2022-12-31'
@@ -71,7 +76,7 @@ plt.title('Covariance Matrix Heatmap')
 plt.show()
 
 # Compute the expected returns and covariance matrix
-risk_free_rate = .04
+
 returns = df.mean()
 cov_matrix = df.cov()
 portfolio_returnn = np.sum(returns * weights) * 252
