@@ -4,7 +4,7 @@
 
 # In[273]:
 
-
+#GET YOUR API KEY FROM https://site.financialmodelingprep.com/developer/docs/#Revenue-Geographic-by-Segments 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
