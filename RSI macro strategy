@@ -22,8 +22,8 @@ rsi = down == 0 ? 100 : up == 0 ? 0 : 100 - (100 / (1 + up / down))
 rsiMA = ma(rsi, maLengthInput, maTypeInput)
 isBB = maTypeInput == "Bollinger Bands"
 
-rsiBuySignal = rsi < 30
-rsiSellSignal = rsi > 70
+rsiBuySignal = rsi < 35
+rsiSellSignal = rsi > 75
 
 strategy.entry("Buy", strategy.long, when=rsiBuySignal)
 strategy.close("Buy", when=rsiSellSignal)
